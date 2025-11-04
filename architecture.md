@@ -75,7 +75,7 @@ The CSV Notes Manager is a web-based application designed to maintain persistent
 └──────────────────────────────────────┘
 ```
 
-#### Model B: Docker Container (from v0.1.0)
+#### Model B: Docker Container (from v0.2.0)
 ```
 ┌──────────────────────────────────────┐
 │   Docker Container                   │

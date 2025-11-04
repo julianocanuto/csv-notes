@@ -1,6 +1,6 @@
 # CSV Notes Manager
 
-**Version:** 0.1.0 (In Development)  
+**Version:** 0.2.0 (In Development)
 **Status:** 🚧 Under Active Development
 
 A web application for managing persistent notes on CSV file rows across multiple file versions.
@@ -22,7 +22,7 @@ A web application for managing persistent notes on CSV file rows across multiple
 
 ## Overview
 
-CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and will eventually be stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.1.0** focuses on the initial backend service and containerization that future milestones will build upon.
+CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.2.0** establishes the foundational database layer that future milestones will build upon.
 
 ### Use Case
 
@@ -36,10 +36,11 @@ Ideal for scenarios where you:
 
 ## Features
 
-### Current Features (v0.1.0)
+### Current Features (v0.2.0)
 
 ✅ FastAPI backend with welcome and health-check endpoints
-✅ Dockerfile and docker-compose setup for local development
+✅ SQLite database managed via SQLAlchemy ORM
+✅ Dockerfile and docker-compose setup with persistent data volume
 ✅ Project documentation outlining roadmap and contribution process
 
 ### Planned Features
@@ -165,19 +166,19 @@ docs(readme): update installation instructions
 
 ## Technology Stack
 
-### Backend (Implemented in v0.1.0)
+### Backend (Implemented in v0.2.0)
 - **Python 3.10+** – Programming language
 - **FastAPI** – Modern web framework
 - **Uvicorn** – ASGI server used for local development
+- **SQLAlchemy** – ORM for database connectivity
+- **SQLite** – Local database for persistent storage
 
 ### DevOps & Tooling
 - **Docker** – Containerization
 - **Docker Compose** – Service orchestration
 
 ### Planned Additions
-- **SQLAlchemy** – ORM for database operations
 - **pandas** – CSV processing and data manipulation
-- **SQLite** – Embedded database for note storage
 - **React 18** – Planned frontend UI
 - **Ant Design** – Planned component library
 - **Redux Toolkit** – Planned state management
@@ -187,14 +188,14 @@ docs(readme): update installation instructions
 
 ## Project Status
 
-### Current Version: 0.1.0 (In Development)
+### Current Version: 0.2.0 (In Development)
 
 This project is under active development. The application is being built incrementally following the roadmap in [`development-plan.md`](development-plan.md).
 
 ### Development Progress
 
 - [x] Version 0.1.0 - Hello World + Docker
-- [ ] Version 0.2.0 - Database Foundation
+- [x] Version 0.2.0 - Database Foundation
 - [ ] Version 0.3.0 - Basic CSV Import
 - [ ] Version 0.4.0 - Simple Data Display
 - [ ] Version 0.5.0 - Single Note Creation
@@ -215,9 +216,9 @@ To stay informed about project progress:
 
 ---
 
-## Data Persistence (Planned)
+## Data Persistence
 
-Persistent note storage will be introduced in a future milestone. The current release does not create a database or write to disk.
+The application now ships with a SQLite database managed through SQLAlchemy. Database files are stored in the `data/` directory and persist across container restarts when using Docker Compose.
 
 ---
 

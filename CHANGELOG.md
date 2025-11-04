@@ -8,11 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial project structure and documentation
-- CONTRIBUTING.md with conventional commits specification
-- Git workflow and branching strategy
-- Pull request template
-- Commitlint configuration for automated validation
 
 ### Changed
 
@@ -23,6 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+---
+
+## [0.2.0] - 2025-11-05
+
+### Added
+- SQLAlchemy configuration and session management for SQLite database support
+- Initial `CSVImport` ORM model for tracking imported files
+- Docker Compose volume and environment configuration for database persistence
+
+### Changed
+- FastAPI application version updated to 0.2.0 with database-aware health check
 
 ---
 
