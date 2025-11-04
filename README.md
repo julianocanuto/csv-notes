@@ -22,7 +22,7 @@ A web application for managing persistent notes on CSV file rows across multiple
 
 ## Overview
 
-CSV Notes Manager allows you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and stored in a local SQLite database, eliminating the need to manually track information between file updates.
+CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and will eventually be stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.1.0** focuses on the initial backend service and containerization that future milestones will build upon.
 
 ### Use Case
 
@@ -38,10 +38,9 @@ Ideal for scenarios where you:
 
 ### Current Features (v0.1.0)
 
-✅ Basic project structure  
-✅ Docker deployment ready  
-✅ FastAPI backend with health checks  
-✅ SQLite database foundation
+✅ FastAPI backend with welcome and health-check endpoints
+✅ Dockerfile and docker-compose setup for local development
+✅ Project documentation outlining roadmap and contribution process
 
 ### Planned Features
 
@@ -72,28 +71,39 @@ See [`development-plan.md`](development-plan.md) for the complete feature roadma
 git clone <repository-url>
 cd csv-notes
 
-# Start the application (development mode)
-docker-compose -f docker-compose.dev.yml up
+# Create a Python virtual environment (optional)
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+```
 
-# Or for production deployment
-docker-compose -f docker-compose.prod.yml up -d
+### Running with Docker (Recommended)
+
+```bash
+# Build and start the FastAPI service
+docker-compose up --build
+```
+
+The API will be available at **http://localhost:8080**.
+
+To stop the containers:
+
+```bash
+docker-compose down
+```
+
+### Running Locally Without Docker
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port 8080
 ```
 
 ### Access the Application
 
-- **Frontend**: http://localhost:3000 (development)
-- **Backend API**: http://localhost:8080
-- **API Documentation**: http://localhost:8080/docs
-
-### Stopping the Application
-
-```bash
-# Development
-docker-compose -f docker-compose.dev.yml down
-
-# Production
-docker-compose -f docker-compose.prod.yml down
-```
+- **Root Endpoint**: http://localhost:8080/
+- **Health Check**: http://localhost:8080/api/v1/health
+- **Interactive API Docs**: http://localhost:8080/docs
 
 ---
 
@@ -155,24 +165,23 @@ docs(readme): update installation instructions
 
 ## Technology Stack
 
-### Backend
-- **Python 3.10+** - Programming language
-- **FastAPI** - Modern web framework
-- **SQLAlchemy** - ORM for database operations
-- **pandas** - CSV processing and data manipulation
-- **SQLite** - Embedded database
+### Backend (Implemented in v0.1.0)
+- **Python 3.10+** – Programming language
+- **FastAPI** – Modern web framework
+- **Uvicorn** – ASGI server used for local development
 
-### Frontend
-- **React 18** - UI library
-- **Ant Design** - Component library
-- **Vite** - Build tool
-- **Redux Toolkit** - State management
+### DevOps & Tooling
+- **Docker** – Containerization
+- **Docker Compose** – Service orchestration
 
-### DevOps
-- **Docker** - Containerization
-- **Docker Compose** - Multi-container orchestration
-- **pytest** - Backend testing
-- **Vitest** - Frontend testing
+### Planned Additions
+- **SQLAlchemy** – ORM for database operations
+- **pandas** – CSV processing and data manipulation
+- **SQLite** – Embedded database for note storage
+- **React 18** – Planned frontend UI
+- **Ant Design** – Planned component library
+- **Redux Toolkit** – Planned state management
+- **pytest / Vitest** – Planned testing frameworks
 
 ---
 
@@ -206,24 +215,9 @@ To stay informed about project progress:
 
 ---
 
-## Data Persistence
+## Data Persistence (Planned)
 
-All data is stored in `./data/notes.db` (SQLite database).
-
-### Backup Your Data
-
-```bash
-# Create a backup
-cp data/notes.db data/notes.db.backup
-
-# Restore from backup
-cp data/notes.db.backup data/notes.db
-```
-
-### Database Location
-
-- **Development**: `./data/notes.db`
-- **Production (Docker)**: Mounted volume at `./data/`
+Persistent note storage will be introduced in a future milestone. The current release does not create a database or write to disk.
 
 ---
 
@@ -251,23 +245,9 @@ netstat -ano | findstr :8080  # Windows
 docker-compose down
 ```
 
-**Database locked error**
-```bash
-# Stop all containers
-docker-compose down
-
-# Remove lock files
-rm data/notes.db-shm
-rm data/notes.db-wal
-
-# Restart
-docker-compose up
-```
-
-**Frontend not connecting to backend**
-- Verify both containers are running: `docker-compose ps`
-- Check proxy configuration in `frontend/vite.config.js`
-- Review CORS settings in backend
+**Changes not reflected after code updates**
+- Restart the container: `docker-compose restart`
+- When running locally, stop Uvicorn (Ctrl+C) and restart the command
 
 For more troubleshooting tips, see [`development-plan.md#troubleshooting-guide`](development-plan.md#troubleshooting-guide).
 
@@ -278,13 +258,11 @@ For more troubleshooting tips, see [`development-plan.md#troubleshooting-guide`]
 ### Prerequisites
 
 - Python 3.10+
-- Node.js 18+
 - Docker and Docker Compose
 - Git
 
 ### Local Development (without Docker)
 
-**Backend:**
 ```bash
 cd backend
 python -m venv venv
@@ -293,28 +271,9 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
 ### Running Tests
 
-**Backend Tests:**
-```bash
-cd backend
-pytest
-pytest --cov=app  # With coverage
-```
-
-**Frontend Tests:**
-```bash
-cd frontend
-npm test
-npm run test:coverage  # With coverage
-```
+Tests are not yet available for version 0.1.0. Future releases will introduce automated test suites for both backend and frontend components.
 
 ---
 
@@ -385,12 +344,10 @@ If you discover a security vulnerability, please email [security@example.com] in
 
 ### Current Security Model
 
-- **Local-only access**: No external network exposure
-- **SQLite database**: File-level permissions
-- **Input validation**: All user inputs are validated
-- **SQL injection prevention**: Using parameterized queries
+- **Local-only access**: Services are intended to run on developer machines only.
+- **Minimal surface area**: Version 0.1.0 exposes read-only informational endpoints.
 
-For planned security features, see [`architecture.md#security-architecture`](architecture.md#security-architecture).
+Planned hardening work (database permissions, extended validation, etc.) is described in [`architecture.md#security-architecture`](architecture.md#security-architecture).
 
 ---
 
