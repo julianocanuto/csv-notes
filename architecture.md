@@ -850,23 +850,54 @@ logger.addHandler(logHandler)
 
 ## 13. Development Workflow
 
+> **📋 Important**: For complete contribution guidelines, including commit conventions, PR process, and version management, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ### 13.1 Git Workflow
 
+**Branch Protection**: The `main` branch is protected. All changes must be made in a separate branch and merged via Pull Request after review and approval.
+
 ```
-main (protected)
-  ├── develop
-  │   ├── feature/csv-import
-  │   ├── feature/note-management
-  │   └── feature/view-filters
-  └── release/v1.0.0
+main (protected - requires PR)
+  ├── feature/csv-import
+  ├── feature/note-management
+  ├── feature/view-filters
+  ├── fix/note-duplicate-tags
+  ├── docs/update-readme
+  └── refactor/database-queries
 ```
 
-**Branch Strategy**:
-- `main`: Production-ready code
-- `develop`: Integration branch
-- `feature/*`: Feature development
-- `release/*`: Release preparation
-- `hotfix/*`: Emergency fixes
+**Branch Naming Convention**:
+```
+<type>/<short-description>
+
+Examples:
+feature/csv-import-validation
+fix/note-duplicate-tags
+docs/update-api-documentation
+refactor/database-queries
+test/csv-processor-unit-tests
+chore/update-dependencies
+```
+
+**Branch Types**:
+- `feature/*`: New features
+- `fix/*`: Bug fixes
+- `docs/*`: Documentation changes
+- `refactor/*`: Code refactoring
+- `test/*`: Adding or updating tests
+- `chore/*`: Maintenance tasks (dependencies, configs)
+- `hotfix/*`: Urgent production fixes
+
+**Workflow Requirements**:
+1. All changes start in a separate branch from `main`
+2. Commits follow [Conventional Commits](https://www.conventionalcommits.org/) format
+3. Pull Request created for review before merge
+4. At least one approval required
+5. All tests must pass
+6. After merge to `main`, create version tag
+7. Create GitHub Release for the tag
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for detailed workflow instructions.
 
 ### 13.2 CI/CD Pipeline
 

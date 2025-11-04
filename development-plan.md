@@ -1837,20 +1837,49 @@ For each version release:
 
 ## Development Guidelines
 
+> **📋 Note**: For complete contribution guidelines, including commit message conventions, branching strategy, and PR process, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ### Git Workflow
+
+**Branch Strategy**: All changes **must** start in a separate branch. Direct commits to `main` are not allowed.
+
 ```bash
-# Start new feature
+# Start new feature (create branch from main)
+git checkout main
+git pull origin main
 git checkout -b feature/note-editing
+
+# Make changes and commit using Conventional Commits format
 git add .
-git commit -m "Add note editing functionality"
+git commit -m "feat(notes): add note editing functionality"
 git push origin feature/note-editing
 
-# After review and approval
+# Create Pull Request, get approval, then merge to main
+
+# After merge to main, create version tag and release
 git checkout main
-git merge feature/note-editing
+git pull origin main
 git tag v0.7.0
 git push origin main --tags
+
+# Create GitHub Release for the tag
 ```
+
+**Commit Message Format** (Conventional Commits):
+```
+<type>(<scope>): <subject>
+
+Examples:
+feat(csv-import): add auto-detection of primary key
+fix(notes): resolve duplicate tag creation
+docs(readme): update installation instructions
+```
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for complete details on:
+- Conventional commit types and scopes
+- Branch naming conventions
+- Pull request process
+- Version management and releases
 
 ### Testing Before Commit
 ```bash
