@@ -54,14 +54,13 @@ async def import_csv(
 
     for record in rows:
         raw_pk = record.get(primary_key_column)
-        if raw_pk is None or raw_pk == "":
+        if raw_pk is None:
             # Skip rows that do not have a primary key value.
             continue
 
-        try:
-            pk_value = int(str(raw_pk).strip())
-        except ValueError:
-            # Skip rows where the primary key cannot be converted to an integer.
+        pk_value = str(raw_pk).strip()
+        if pk_value == "":
+            # Skip rows that normalize to an empty value.
             continue
 
         existing_row = (

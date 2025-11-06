@@ -27,7 +27,7 @@ class CSVRow(Base):
     __tablename__ = "csv_rows"
 
     row_id = Column(Integer, primary_key=True, autoincrement=True)
-    primary_key_value = Column(Integer, nullable=False, unique=True, index=True)
+    primary_key_value = Column(String, nullable=False, unique=True, index=True)
     first_import_id = Column(Integer, ForeignKey("csv_imports.import_id"))
     last_seen_import_id = Column(Integer, ForeignKey("csv_imports.import_id"))
     is_orphaned = Column(Boolean, nullable=False, default=False)
