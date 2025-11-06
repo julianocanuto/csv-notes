@@ -21,6 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.5.0] - 2025-11-08
+
+### Added
+- SQLAlchemy models for CSV rows and notes with relationships
+- FastAPI endpoints for creating notes and retrieving notes by row
+
+### Changed
+- Application version metadata updated to 0.5.0 across backend and frontend
+- Health endpoint response streamlined for the notes-enabled release
+
+---
+
 ## [0.4.0] - 2025-11-07
 
 ### Added
