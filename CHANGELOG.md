@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Notes API endpoint to list all non-deleted notes in reverse chronological order
 
 ### Changed
 

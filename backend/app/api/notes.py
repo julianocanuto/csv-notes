@@ -50,6 +50,32 @@ async def create_note(note: NoteCreate, db: Session = Depends(get_db)) -> Dict[s
     }
 
 
+@router.get("/")
+async def list_notes(db: Session = Depends(get_db)) -> Dict[str, Any]:
+    """Retrieve all non-deleted notes ordered by newest first."""
+
+    notes = (
+        db.query(Note)
+        .filter(Note.is_deleted == False)  # noqa: E712
+        .order_by(Note.created_timestamp.desc())
+        .all()
+    )
+
+    return {
+        "success": True,
+        "notes": [
+            {
+                "note_id": item.note_id,
+                "row_id": item.row_id,
+                "note_text": item.note_text,
+                "status": item.status,
+                "created_timestamp": item.created_timestamp.isoformat(),
+            }
+            for item in notes
+        ],
+    }
+
+
 @router.get("/by-row/{row_id}")
 async def get_notes_for_row(row_id: int, db: Session = Depends(get_db)) -> Dict[str, Any]:
     """Retrieve notes for a specific CSV row."""
