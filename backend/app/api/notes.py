@@ -41,7 +41,16 @@ async def create_note(note: NoteCreate, db: Session = Depends(get_db)) -> Dict[s
     if row is None:
         row = query.filter(CSVRow.primary_key_value == identifier).first()
     if not row:
-        raise HTTPException(status_code=404, detail="Row not found")
+        # No existing CSV row has been persisted yet. Create a lightweight row so
+        # that notes can still be attached to arbitrary identifiers.
+        row = CSVRow(
+            primary_key_value=identifier,
+            first_import_id=None,
+            last_seen_import_id=None,
+            is_orphaned=True,
+        )
+        db.add(row)
+        db.flush()
 
     new_note = Note(
         row_id=row.row_id,
