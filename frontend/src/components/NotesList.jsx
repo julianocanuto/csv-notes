@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Empty, Tag } from 'antd'
+import { Card, Empty, Tag, Typography } from 'antd'
 
 const STATUS_COLORS = {
   open: 'blue',
@@ -14,17 +14,16 @@ function NotesList({ rowId }) {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (!rowId && rowId !== 0) {
-      setNotes([])
-      setError(null)
-      return
-    }
-
     let isActive = true
     setLoading(true)
     setError(null)
 
-    fetch(`/api/v1/notes/by-row/${encodeURIComponent(rowId)}`)
+    const endpoint =
+      rowId || rowId === 0
+        ? `/api/v1/notes/by-row/${encodeURIComponent(rowId)}`
+        : '/api/v1/notes'
+
+    fetch(endpoint)
       .then(async response => {
         if (!response.ok) {
           const message = await response.text()
@@ -39,7 +38,7 @@ function NotesList({ rowId }) {
       .catch(err => {
         if (!isActive) return
         console.error('Failed to load notes', err)
-        setError('Unable to load notes for this row.')
+        setError('Unable to load notes.')
         setNotes([])
       })
       .finally(() => {
@@ -52,9 +51,7 @@ function NotesList({ rowId }) {
     }
   }, [rowId])
 
-  if (!rowId && rowId !== 0) {
-    return <Empty description="Enter a row ID to view notes" />
-  }
+  const heading = rowId || rowId === 0 ? `Notes for Row ${rowId}` : 'All Notes'
 
   if (loading) {
     return <div>Loading notes...</div>
@@ -70,7 +67,9 @@ function NotesList({ rowId }) {
 
   return (
     <div style={{ marginTop: '20px' }}>
-      <h3>Notes for Row {rowId}</h3>
+      <Typography.Title level={3} style={{ marginBottom: '16px' }}>
+        {heading}
+      </Typography.Title>
       {notes.map(note => {
         const status = note.status || 'Open'
         const colorKey = status.toLowerCase()
@@ -82,6 +81,10 @@ function NotesList({ rowId }) {
               {status}
             </Tag>
             <div style={{ marginTop: '8px', whiteSpace: 'pre-wrap' }}>{note.note_text}</div>
+            <div style={{ marginTop: '12px', fontSize: '12px', color: '#666' }}>
+              Row ID: <strong>{note.row_id}</strong>
+              {note.primary_key_value ? ` · Key: ${note.primary_key_value}` : ''}
+            </div>
             {note.created_timestamp && (
               <div style={{ fontSize: '12px', color: '#999', marginTop: '8px' }}>
                 {new Date(note.created_timestamp).toLocaleString()}

@@ -42,7 +42,7 @@ Ideal for scenarios where you:
 ✅ CSV import API with persistence of upload metadata
 ✅ SQLite database managed via SQLAlchemy ORM
 ✅ React 18 frontend (Vite) that displays backend health information
-✅ Ant Design-powered UI for browsing notes on specific rows
+✅ Ant Design-powered UI for browsing all notes with optional row filtering
 ✅ Note API supporting creation and retrieval of notes for CSV rows
 ✅ Dockerfile and docker-compose setup with persistent data volume
 ✅ Docker Compose development environment with hot-reloading frontend and backend

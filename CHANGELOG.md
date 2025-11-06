@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- Notes page defaults to showing all notes with an optional row filter
 
 ### Deprecated
 
