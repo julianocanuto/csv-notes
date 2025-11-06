@@ -8,7 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Notes API endpoint to list all non-deleted notes in reverse chronological order
+
+### Changed
+- Notes page defaults to showing all notes with an optional row filter
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+---
+
+## [0.6.0] - 2025-11-09
+
+### Added
+- Ant Design UI components for browsing notes within the frontend
+- Row selector input for loading notes tied to a specific CSV row
+- Read-only notes list that surfaces status tags and timestamps
 
 ### Changed
 

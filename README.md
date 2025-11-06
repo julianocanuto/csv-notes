@@ -1,6 +1,6 @@
 # CSV Notes Manager
 
-**Version:** 0.5.0 (In Development)
+**Version:** 0.6.0 (In Development)
 **Status:** 🚧 Under Active Development
 
 A web application for managing persistent notes on CSV file rows across multiple file versions.
@@ -22,7 +22,7 @@ A web application for managing persistent notes on CSV file rows across multiple
 
 ## Overview
 
-CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.5.0** introduces the first backend endpoints for creating notes tied to imported CSV rows, expanding on the frontend and database foundations delivered in earlier releases.
+CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.6.0** introduces the first read-only note display within the frontend, building on the note creation and retrieval endpoints delivered in the previous release.
 
 ### Use Case
 
@@ -36,12 +36,13 @@ Ideal for scenarios where you:
 
 ## Features
 
-### Current Features (v0.5.0)
+### Current Features (v0.6.0)
 
 ✅ FastAPI backend with welcome and health-check endpoints
 ✅ CSV import API with persistence of upload metadata
 ✅ SQLite database managed via SQLAlchemy ORM
 ✅ React 18 frontend (Vite) that displays backend health information
+✅ Ant Design-powered UI for browsing all notes with optional row filtering
 ✅ Note API supporting creation and retrieval of notes for CSV rows
 ✅ Dockerfile and docker-compose setup with persistent data volume
 ✅ Docker Compose development environment with hot-reloading frontend and backend
@@ -212,7 +213,7 @@ docs(readme): update installation instructions
 
 ## Project Status
 
-### Current Version: 0.5.0 (In Development)
+### Current Version: 0.6.0 (In Development)
 
 This project is under active development. The application is being built incrementally following the roadmap in [`development-plan.md`](development-plan.md).
 
@@ -223,7 +224,7 @@ This project is under active development. The application is being built increme
 - [x] Version 0.3.0 - Basic CSV Import
 - [x] Version 0.4.0 - Simple Data Display
 - [x] Version 0.5.0 - Single Note Creation
-- [ ] Version 0.6.0 - Note Display
+- [x] Version 0.6.0 - Note Display
 - [ ] Version 0.7.0 - Note Editing
 - [ ] Version 0.8.0 - Note Tags
 - [ ] Version 0.9.0 - Primary Key Detection

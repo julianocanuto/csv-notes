@@ -1,34 +1,42 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import { Button, Input } from 'antd'
+import NotesList from './components/NotesList'
 
 function App() {
-  const [health, setHealth] = useState(null)
-  const [error, setError] = useState(null)
+  const [inputValue, setInputValue] = useState('')
+  const [activeRowId, setActiveRowId] = useState(null)
 
-  useEffect(() => {
-    fetch('/api/v1/health')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`)
-        }
-        return response.json()
-      })
-      .then(data => setHealth(data))
-      .catch(err => setError(err.message))
-  }, [])
+  const handleLoadNotes = () => {
+    const trimmed = inputValue.trim()
+    setActiveRowId(trimmed || null)
+  }
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>CSV Notes Manager v0.5.0</h1>
-      {error && <p style={{ color: 'red' }}>Error loading health status: {error}</p>}
-      {health ? (
-        <div>
-          <p>Status: {health.status}</p>
-          <p>Version: {health.version}</p>
-          {health.database && <p>Database: {health.database}</p>}
-        </div>
-      ) : (
-        !error && <p>Loading health information...</p>
-      )}
+    <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
+      <h1>CSV Notes Manager v0.6.0</h1>
+
+      <p style={{ marginBottom: '16px', color: '#555' }}>
+        Browse every note in the system or filter by a specific row identifier.
+      </p>
+
+      <div style={{ marginBottom: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        <Input
+          style={{ width: '260px' }}
+          placeholder="Filter by Row ID"
+          value={inputValue}
+          onChange={event => setInputValue(event.target.value)}
+          onPressEnter={handleLoadNotes}
+          allowClear
+        />
+        <Button type="primary" onClick={handleLoadNotes}>
+          Apply Filter
+        </Button>
+        <Button onClick={() => { setInputValue(''); setActiveRowId(null) }}>
+          Clear Filter
+        </Button>
+      </div>
+
+      <NotesList rowId={activeRowId} />
     </div>
   )
 }
