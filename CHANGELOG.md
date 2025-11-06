@@ -21,6 +21,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] - 2025-11-07
+
+### Added
+- Vite-powered React frontend that displays backend health status
+- Development Docker Compose configuration with frontend hot reloading
+
+### Changed
+- FastAPI application metadata updated to version 0.4.0
+
+---
+
+## [0.3.0] - 2025-11-06
+
+### Added
+- CSV import API endpoints with file metadata persistence in SQLite
+- SQLAlchemy model updates supporting CSV import tracking
+
+### Changed
+- FastAPI application metadata updated to version 0.3.0 with CSV routes
+
+---
+
 ## [0.2.0] - 2025-11-05
 
 ### Added

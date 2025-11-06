@@ -1,6 +1,6 @@
 # CSV Notes Manager
 
-**Version:** 0.2.0 (In Development)
+**Version:** 0.4.0 (In Development)
 **Status:** 🚧 Under Active Development
 
 A web application for managing persistent notes on CSV file rows across multiple file versions.
@@ -22,7 +22,7 @@ A web application for managing persistent notes on CSV file rows across multiple
 
 ## Overview
 
-CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.2.0** establishes the foundational database layer that future milestones will build upon.
+CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.4.0** introduces the first frontend deliverable so the backend health status is visible from a browser while building on the foundational database layer delivered in earlier releases.
 
 ### Use Case
 
@@ -36,11 +36,14 @@ Ideal for scenarios where you:
 
 ## Features
 
-### Current Features (v0.2.0)
+### Current Features (v0.4.0)
 
 ✅ FastAPI backend with welcome and health-check endpoints
+✅ CSV import API with persistence of upload metadata
 ✅ SQLite database managed via SQLAlchemy ORM
+✅ React 18 frontend (Vite) that displays backend health information
 ✅ Dockerfile and docker-compose setup with persistent data volume
+✅ Docker Compose development environment with hot-reloading frontend and backend
 ✅ Project documentation outlining roadmap and contribution process
 
 ### Planned Features
@@ -92,6 +95,16 @@ To stop the containers:
 docker-compose down
 ```
 
+### Running the Full Development Environment
+
+```bash
+docker-compose -f docker-compose.dev.yml up
+```
+
+- Frontend available at **http://localhost:3000**
+- Backend available at **http://localhost:8080**
+- Hot reload enabled for both services
+
 ### Running Locally Without Docker
 
 ```bash
@@ -102,6 +115,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8080
 
 ### Access the Application
 
+- **Frontend UI**: http://localhost:3000/
 - **Root Endpoint**: http://localhost:8080/
 - **Health Check**: http://localhost:8080/api/v1/health
 - **Interactive API Docs**: http://localhost:8080/docs
@@ -166,7 +180,7 @@ docs(readme): update installation instructions
 
 ## Technology Stack
 
-### Backend (Implemented in v0.2.0)
+### Backend (Implemented through v0.4.0)
 - **Python 3.10+** – Programming language
 - **FastAPI** – Modern web framework
 - **Uvicorn** – ASGI server used for local development
@@ -177,9 +191,12 @@ docs(readme): update installation instructions
 - **Docker** – Containerization
 - **Docker Compose** – Service orchestration
 
+### Frontend (Introduced in v0.4.0)
+- **React 18** – Component framework
+- **Vite** – Frontend tooling and dev server
+
 ### Planned Additions
 - **pandas** – CSV processing and data manipulation
-- **React 18** – Planned frontend UI
 - **Ant Design** – Planned component library
 - **Redux Toolkit** – Planned state management
 - **pytest / Vitest** – Planned testing frameworks
@@ -188,7 +205,7 @@ docs(readme): update installation instructions
 
 ## Project Status
 
-### Current Version: 0.2.0 (In Development)
+### Current Version: 0.4.0 (In Development)
 
 This project is under active development. The application is being built incrementally following the roadmap in [`development-plan.md`](development-plan.md).
 
@@ -196,8 +213,8 @@ This project is under active development. The application is being built increme
 
 - [x] Version 0.1.0 - Hello World + Docker
 - [x] Version 0.2.0 - Database Foundation
-- [ ] Version 0.3.0 - Basic CSV Import
-- [ ] Version 0.4.0 - Simple Data Display
+- [x] Version 0.3.0 - Basic CSV Import
+- [x] Version 0.4.0 - Simple Data Display
 - [ ] Version 0.5.0 - Single Note Creation
 - [ ] Version 0.6.0 - Note Display
 - [ ] Version 0.7.0 - Note Editing
