@@ -1,13 +1,25 @@
 version: '3.8'
 
 services:
-  csv-notes:
-    build: .
-    container_name: csv-notes-manager
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: csv-notes-backend
     ports:
       - "8080:8080"
-    volumes:
-      - ./data:/app/data
     environment:
       - DATABASE_URL=sqlite:///./data/notes.db
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: csv-notes-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
     restart: unless-stopped
