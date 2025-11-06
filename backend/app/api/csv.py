@@ -1,14 +1,16 @@
 """CSV import API endpoints."""
 from __future__ import annotations
 
+import csv
+import io
 from datetime import datetime
 from typing import Any, Dict
 
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import CSVImport
+from ..models import CSVImport, CSVRow
 
 router = APIRouter()
 
@@ -18,25 +20,68 @@ async def import_csv(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ) -> Dict[str, Any]:
-    """Import a CSV file and record its metadata."""
+    """Import a CSV file, track its metadata, and persist row references."""
     contents = await file.read()
+
+    if not contents:
+        raise HTTPException(status_code=400, detail="Uploaded file is empty")
 
     try:
         decoded = contents.decode()
     except UnicodeDecodeError:
         decoded = contents.decode("utf-8", errors="ignore")
 
-    lines = decoded.splitlines()
-    row_count = max(len(lines) - 1, 0) if lines else 0
+    csv_buffer = io.StringIO(decoded)
+    reader = csv.DictReader(csv_buffer)
+
+    if not reader.fieldnames:
+        raise HTTPException(status_code=400, detail="CSV file is missing a header row")
+
+    rows = list(reader)
+    row_count = len(rows)
+
+    primary_key_column = "ID" if "ID" in reader.fieldnames else reader.fieldnames[0]
 
     csv_import = CSVImport(
         filename=file.filename,
         import_timestamp=datetime.utcnow(),
         row_count=row_count,
-        primary_key_column="ID",
+        primary_key_column=primary_key_column,
     )
 
     db.add(csv_import)
+    db.flush()
+
+    for record in rows:
+        raw_pk = record.get(primary_key_column)
+        if raw_pk is None:
+            # Skip rows that do not have a primary key value.
+            continue
+
+        pk_value = str(raw_pk).strip()
+        if pk_value == "":
+            # Skip rows that normalize to an empty value.
+            continue
+
+        existing_row = (
+            db.query(CSVRow)
+            .filter(CSVRow.primary_key_value == pk_value)
+            .one_or_none()
+        )
+
+        if existing_row:
+            existing_row.last_seen_import_id = csv_import.import_id
+            existing_row.is_orphaned = False
+            continue
+
+        csv_row = CSVRow(
+            primary_key_value=pk_value,
+            first_import_id=csv_import.import_id,
+            last_seen_import_id=csv_import.import_id,
+            is_orphaned=False,
+        )
+        db.add(csv_row)
+
     db.commit()
     db.refresh(csv_import)
 
@@ -45,7 +90,7 @@ async def import_csv(
         "import_id": csv_import.import_id,
         "filename": csv_import.filename,
         "row_count": csv_import.row_count,
-        "message": f"CSV uploaded with {row_count} rows",
+        "primary_key": primary_key_column,
     }
 
 

@@ -18,13 +18,13 @@ function App() {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>CSV Notes Manager v0.4.0</h1>
+      <h1>CSV Notes Manager v0.5.0</h1>
       {error && <p style={{ color: 'red' }}>Error loading health status: {error}</p>}
       {health ? (
         <div>
           <p>Status: {health.status}</p>
           <p>Version: {health.version}</p>
-          <p>Database: {health.database}</p>
+          {health.database && <p>Database: {health.database}</p>}
         </div>
       ) : (
         !error && <p>Loading health information...</p>
