@@ -7,7 +7,7 @@ from .api import csv, notes
 # Create database tables on startup.
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="CSV Notes Manager", version="0.5.0")
+app = FastAPI(title="CSV Notes Manager", version="1.0.0")
 
 app.include_router(csv.router, prefix="/api/v1/csv", tags=["CSV"])
 app.include_router(notes.router, prefix="/api/v1/notes", tags=["Notes"])
@@ -15,9 +15,9 @@ app.include_router(notes.router, prefix="/api/v1/notes", tags=["Notes"])
 
 @app.get("/")
 async def root():
-    return {"message": "CSV Notes Manager v0.5.0", "status": "running"}
+    return {"message": "CSV Notes Manager v1.0.0", "status": "running"}
 
 
 @app.get("/api/v1/health")
 async def health():
-    return {"status": "healthy", "version": "0.5.0"}
+    return {"status": "healthy", "version": "1.0.0"}

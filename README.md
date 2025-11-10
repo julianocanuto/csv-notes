@@ -1,7 +1,7 @@
 # CSV Notes Manager
 
-**Version:** 0.6.0 (In Development)
-**Status:** 🚧 Under Active Development
+**Version:** 1.0.0 (MVP Complete)
+**Status:** ✅ Ready for day-to-day use
 
 A web application for managing persistent notes on CSV file rows across multiple file versions.
 
@@ -22,7 +22,7 @@ A web application for managing persistent notes on CSV file rows across multiple
 
 ## Overview
 
-CSV Notes Manager is a web application that will allow you to maintain persistent notes on specific CSV file rows across multiple versions of the file. Notes are linked via a primary key (ID column) and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **0.6.0** introduces the first read-only note display within the frontend, building on the note creation and retrieval endpoints delivered in the previous release.
+CSV Notes Manager is a web application that allows you to maintain persistent, searchable notes on specific CSV file rows across multiple versions of the file. Notes are linked via a detected primary key column and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **1.0.0** delivers editable notes, tagging, and smarter primary key detection to round out the core MVP experience.
 
 ### Use Case
 
@@ -36,28 +36,24 @@ Ideal for scenarios where you:
 
 ## Features
 
-### Current Features (v0.6.0)
+### Current Features (v1.0.0)
 
 ✅ FastAPI backend with welcome and health-check endpoints
-✅ CSV import API with persistence of upload metadata
-✅ SQLite database managed via SQLAlchemy ORM
-✅ React 18 frontend (Vite) that displays backend health information
-✅ Ant Design-powered UI for browsing all notes with optional row filtering
-✅ Note API supporting creation and retrieval of notes for CSV rows
+✅ CSV import API with automatic primary key detection and persistence of upload metadata
+✅ SQLite database managed via SQLAlchemy ORM with note/tag relationships
+✅ Note API supporting creation, retrieval, and in-place editing with status validation
+✅ Tagging support so each note can track multiple categories
+✅ React 18 + Ant Design UI for filtering, browsing, and editing notes inline
 ✅ Dockerfile and docker-compose setup with persistent data volume
 ✅ Docker Compose development environment with hot-reloading frontend and backend
 ✅ Project documentation outlining roadmap and contribution process
 
 ### Planned Features
 
-- 📝 CSV file import with auto-detection of primary key
-- 📌 Create, read, update, and delete notes on CSV rows
-- 🏷️ Multiple tags per note for categorization
-- 📊 Note status management (Open, In Progress, Resolved, Closed)
+- ⚠️ Orphaned row detection and management
 - 🔍 Advanced filtering and search capabilities
 - 👁️ Custom views with saved configurations
 - 📤 Export functionality for notes and filtered data
-- ⚠️ Orphaned row detection and management
 
 See [`development-plan.md`](development-plan.md) for the complete feature roadmap.
 

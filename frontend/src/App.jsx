@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Input } from 'antd'
+import { Button, Input, Typography } from 'antd'
 import NotesList from './components/NotesList'
 
 function App() {
@@ -13,11 +13,14 @@ function App() {
 
   return (
     <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
-      <h1>CSV Notes Manager v0.6.0</h1>
+      <Typography.Title level={2} style={{ marginBottom: '8px' }}>
+        CSV Notes Manager v1.0.0
+      </Typography.Title>
 
-      <p style={{ marginBottom: '16px', color: '#555' }}>
-        Browse every note in the system or filter by a specific row identifier.
-      </p>
+      <Typography.Paragraph style={{ marginBottom: '16px' }}>
+        Browse, tag, and edit notes across every CSV import or focus on a specific row
+        identifier to manage detailed follow-up work.
+      </Typography.Paragraph>
 
       <div style={{ marginBottom: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
         <Input

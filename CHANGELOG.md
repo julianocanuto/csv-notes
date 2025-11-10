@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
-- Notes page defaults to showing all notes with an optional row filter
 
 ### Deprecated
 
@@ -22,6 +21,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2025-11-13
+
+### Added
+- Editable notes modal within the React frontend for quick status and text updates
+- Documentation refresh highlighting the complete MVP capabilities
+
+### Changed
+- Application version metadata updated to 1.0.0 across backend and frontend
+- README updated to describe tagging, editing, and primary key detection features
+
+### Fixed
+- Ensured note responses consistently include updated timestamps alongside creation data
+
+---
+
+## [0.9.0] - 2025-11-12
+
+### Added
+- Heuristic-driven primary key detection that analyzes headers, coverage, and uniqueness metrics
+
+### Changed
+- CSV import endpoint now relies on automatic primary key detection before persisting rows
+
+---
+
+## [0.8.0] - 2025-11-11
+
+### Added
+- Persistent tag model and association table for categorizing notes
+- API support for assigning and updating tags during note creation and editing
+- Frontend tag management with Ant Design multi-select controls and display chips
+
+### Changed
+- Note responses now return associated tags for both list and row-specific endpoints
+
+---
+
+## [0.7.0] - 2025-11-10
+
+### Added
+- PATCH endpoint for updating note text, status, and tags with validation
+- Updated timestamp tracking on notes to audit edits alongside creation dates
+- Frontend modal workflow to edit existing notes without leaving the list view
+
+---
+
 ## [0.6.0] - 2025-11-09
 
 ### Added
@@ -30,6 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Read-only notes list that surfaces status tags and timestamps
 
 ### Changed
+- Notes page defaults to showing all notes with an optional row filter
 
 ### Deprecated
 
