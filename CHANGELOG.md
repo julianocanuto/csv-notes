@@ -21,6 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2025-12-02
+
+### Added
+- CSV row snapshot storage that preserves the full contents of each imported file
+- API endpoint for retrieving import contents alongside associated notes
+- React table for browsing imported CSVs with an inline notes column and row-to-note filtering
+
+### Changed
+- CSV import listings now expose detected primary key columns for easier reference
+
+---
+
 ## [1.0.0] - 2025-11-13
 
 ### Added

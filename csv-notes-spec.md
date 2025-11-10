@@ -1127,7 +1127,7 @@ from .database import engine, Base
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="CSV Notes Manager", version="1.0.0")
+app = FastAPI(title="CSV Notes Manager", version="1.1.0")
 
 # CORS middleware for local development
 app.add_middleware(
@@ -1768,7 +1768,7 @@ ID,Customer_Name,Order_Date,Amount,Status,Region,Product,Quantity,Notes_Field,Pr
 {
   "application": {
     "name": "CSV Notes Manager",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "port": 8080,
     "port_range": [8080, 8081, 8082, 8083, 8084]
   },

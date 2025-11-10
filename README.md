@@ -1,6 +1,6 @@
 # CSV Notes Manager
 
-**Version:** 1.0.0 (MVP Complete)
+**Version:** 1.1.0 (CSV Explorer Release)
 **Status:** ✅ Ready for day-to-day use
 
 A web application for managing persistent notes on CSV file rows across multiple file versions.
@@ -22,7 +22,7 @@ A web application for managing persistent notes on CSV file rows across multiple
 
 ## Overview
 
-CSV Notes Manager is a web application that allows you to maintain persistent, searchable notes on specific CSV file rows across multiple versions of the file. Notes are linked via a detected primary key column and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **1.0.0** delivers editable notes, tagging, and smarter primary key detection to round out the core MVP experience.
+CSV Notes Manager is a web application that allows you to maintain persistent, searchable notes on specific CSV file rows across multiple versions of the file. Notes are linked via a detected primary key column and are stored in a local SQLite database, eliminating the need to manually track information between file updates. Version **1.1.0** introduces a CSV explorer that surfaces imported file contents alongside note context, building on the editable notes, tagging, and smarter primary key detection delivered in v1.0.0.
 
 ### Use Case
 
@@ -36,7 +36,7 @@ Ideal for scenarios where you:
 
 ## Features
 
-### Current Features (v1.0.0)
+### Current Features (v1.1.0)
 
 ✅ FastAPI backend with welcome and health-check endpoints
 ✅ CSV import API with automatic primary key detection and persistence of upload metadata
@@ -44,6 +44,7 @@ Ideal for scenarios where you:
 ✅ Note API supporting creation, retrieval, and in-place editing with status validation
 ✅ Tagging support so each note can track multiple categories
 ✅ React 18 + Ant Design UI for filtering, browsing, and editing notes inline
+✅ Imported CSV explorer that displays each dataset with a notes column and quick filtering into the notes panel
 ✅ Dockerfile and docker-compose setup with persistent data volume
 ✅ Docker Compose development environment with hot-reloading frontend and backend
 ✅ Project documentation outlining roadmap and contribution process
@@ -209,7 +210,7 @@ docs(readme): update installation instructions
 
 ## Project Status
 
-### Current Version: 0.6.0 (In Development)
+### Current Version: 1.1.0 (CSV Explorer Release)
 
 This project is under active development. The application is being built incrementally following the roadmap in [`development-plan.md`](development-plan.md).
 
@@ -221,10 +222,11 @@ This project is under active development. The application is being built increme
 - [x] Version 0.4.0 - Simple Data Display
 - [x] Version 0.5.0 - Single Note Creation
 - [x] Version 0.6.0 - Note Display
-- [ ] Version 0.7.0 - Note Editing
-- [ ] Version 0.8.0 - Note Tags
-- [ ] Version 0.9.0 - Primary Key Detection
-- [ ] Version 1.0.0 - MVP Complete
+- [x] Version 0.7.0 - Note Editing
+- [x] Version 0.8.0 - Note Tags
+- [x] Version 0.9.0 - Primary Key Detection
+- [x] Version 1.0.0 - MVP Complete
+- [x] Version 1.1.0 - CSV Explorer Release
 
 See [`development-plan.md`](development-plan.md) for detailed milestones and timelines.
 

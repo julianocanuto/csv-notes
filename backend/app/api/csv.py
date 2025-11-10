@@ -8,10 +8,10 @@ from datetime import datetime
 from typing import Any, Dict, Iterable, List
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from ..database import get_db
-from ..models import CSVImport, CSVRow
+from ..models import CSVImport, CSVImportSchema, CSVRow, CSVRowSnapshot, Note
 
 router = APIRouter()
 
@@ -142,6 +142,10 @@ async def import_csv(
     db.add(csv_import)
     db.flush()
 
+    if reader.fieldnames:
+        schema = CSVImportSchema(import_id=csv_import.import_id, columns=reader.fieldnames)
+        db.add(schema)
+
     for record in rows:
         raw_pk = record.get(primary_key_column)
         if raw_pk is None:
@@ -153,6 +157,15 @@ async def import_csv(
             # Skip rows that normalize to an empty value.
             continue
 
+        normalized_record: Dict[str, Any] = {}
+        if reader.fieldnames:
+            for field in reader.fieldnames:
+                value = record.get(field, "")
+                normalized_record[field] = "" if value is None else str(value)
+        else:
+            for key, value in record.items():
+                normalized_record[key] = "" if value is None else str(value)
+
         existing_row = (
             db.query(CSVRow)
             .filter(CSVRow.primary_key_value == pk_value)
@@ -160,8 +173,16 @@ async def import_csv(
         )
 
         if existing_row:
+            if existing_row.first_import_id is None:
+                existing_row.first_import_id = csv_import.import_id
             existing_row.last_seen_import_id = csv_import.import_id
             existing_row.is_orphaned = False
+            snapshot = CSVRowSnapshot(
+                row=existing_row,
+                csv_import=csv_import,
+                data=normalized_record,
+            )
+            db.add(snapshot)
             continue
 
         csv_row = CSVRow(
@@ -171,6 +192,13 @@ async def import_csv(
             is_orphaned=False,
         )
         db.add(csv_row)
+
+        snapshot = CSVRowSnapshot(
+            row=csv_row,
+            csv_import=csv_import,
+            data=normalized_record,
+        )
+        db.add(snapshot)
 
     db.commit()
     db.refresh(csv_import)
@@ -196,7 +224,91 @@ async def list_imports(db: Session = Depends(get_db)) -> Dict[str, Any]:
                 "filename": item.filename,
                 "row_count": item.row_count,
                 "timestamp": item.import_timestamp.isoformat(),
+                "primary_key": item.primary_key_column,
             }
             for item in imports
         ],
+    }
+
+
+@router.get("/imports/{import_id}/rows")
+async def get_import_rows(import_id: int, db: Session = Depends(get_db)) -> Dict[str, Any]:
+    """Retrieve the row data for a specific CSV import."""
+
+    csv_import = (
+        db.query(CSVImport)
+        .options(joinedload(CSVImport.schema))
+        .filter(CSVImport.import_id == import_id)
+        .one_or_none()
+    )
+
+    if not csv_import:
+        raise HTTPException(status_code=404, detail="Import not found")
+
+    snapshots = (
+        db.query(CSVRowSnapshot)
+        .options(
+            joinedload(CSVRowSnapshot.row)
+            .joinedload(CSVRow.notes)
+            .joinedload(Note.tags)
+        )
+        .filter(CSVRowSnapshot.import_id == import_id)
+        .order_by(CSVRowSnapshot.snapshot_id.asc())
+        .all()
+    )
+
+    columns: List[str] = []
+    if csv_import.schema and csv_import.schema.columns:
+        columns = list(csv_import.schema.columns)
+    else:
+        for snapshot in snapshots:
+            data = snapshot.data or {}
+            for key in data:
+                if key not in columns:
+                    columns.append(key)
+            if columns:
+                break
+
+    rows: List[Dict[str, Any]] = []
+    for snapshot in snapshots:
+        row = snapshot.row
+        if not row:
+            continue
+        note_entries: List[Dict[str, Any]] = []
+        for note in row.notes:
+            if note.is_deleted:
+                continue
+            note_entries.append(
+                {
+                    "note_id": note.note_id,
+                    "note_text": note.note_text,
+                    "status": note.status,
+                    "tags": [tag.name for tag in note.tags],
+                    "created_timestamp": note.created_timestamp.isoformat(),
+                    "updated_timestamp": note.updated_timestamp.isoformat(),
+                }
+            )
+
+        note_entries.sort(key=lambda item: item["created_timestamp"], reverse=True)
+
+        rows.append(
+            {
+                "row_id": row.row_id,
+                "primary_key_value": row.primary_key_value,
+                "data": snapshot.data,
+                "notes": note_entries,
+            }
+        )
+
+    return {
+        "success": True,
+        "import": {
+            "import_id": csv_import.import_id,
+            "filename": csv_import.filename,
+            "row_count": csv_import.row_count,
+            "timestamp": csv_import.import_timestamp.isoformat(),
+            "primary_key": csv_import.primary_key_column,
+        },
+        "columns": columns,
+        "rows": rows,
     }
