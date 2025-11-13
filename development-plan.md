@@ -1572,7 +1572,7 @@ from .api import csv, notes
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="CSV Notes Manager", version="1.0.0")
+app = FastAPI(title="CSV Notes Manager", version="1.1.0")
 
 app.include_router(csv.router, prefix="/api/v1/csv", tags=["CSV"])
 app.include_router(notes.router, prefix="/api/v1/notes", tags=["Notes"])
@@ -1588,7 +1588,7 @@ if static_path.exists():
 
 @app.get("/api/v1/health")
 async def health():
-    return {"status": "healthy", "version": "1.0.0"}
+    return {"status": "healthy", "version": "1.1.0"}
 ```
 
 #### Task 1.0.3: Production Docker Compose
@@ -1622,7 +1622,7 @@ services:
 ```markdown
 # CSV Notes Manager
 
-Version: 1.0.0 (MVP)
+Version: 1.1.0 (CSV Explorer Release)
 
 A web application for managing persistent notes on CSV file rows across multiple file versions.
 
